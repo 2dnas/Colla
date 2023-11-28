@@ -17,7 +17,7 @@ public class Network: NetworkService {
         self.decoder = decoder
     }
     
-    open func request<T: Decodable>(with request: URLRequest, handler: @escaping (Result<T, Error>) -> Void) {
+    open func request<T: Decodable>(with request: URL, handler: @escaping (Result<T, Error>) -> Void) {
             self.request(with: request) { (result: Result<Response<T>, Error>) in
                 switch result {
                 case .success(let response):
@@ -28,7 +28,7 @@ public class Network: NetworkService {
             }
         }
     
-    open func request<T: Decodable>(with request: URLRequest, handler: @escaping (Result<Response<T>, Error>) -> Void) {
+    open func request<T: Decodable>(with request: URL, handler: @escaping (Result<Response<T>, Error>) -> Void) {
             let decoder = self.decoder
             self.request(with: request) { (result: Result<Response<Data>, Error>) in
                 switch result {
@@ -45,7 +45,7 @@ public class Network: NetworkService {
             }
         }
 
-        open func request(with request: URLRequest, handler: @escaping (Result<Response<Data>, Error>) -> Void) {
+        open func request(with request: URL, handler: @escaping (Result<Response<Data>, Error>) -> Void) {
             session.dataTask(with: request) { data, response, error in
                 if let error {
                     return handler(.failure(NetworkError.error(error: error)))
